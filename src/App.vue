@@ -2,17 +2,13 @@
   <v-app>
     <NavComp />
     <router-view></router-view>
+    <FooterComp />
   </v-app>
 </template>
 
 <script>
-export default {
-  name: 'App',
-};
-</script>
-
-<script>
 import NavComp from './components/NavComp.vue'
+import FooterComp from './components/FooterComp.vue'
 
 export default {
   name: 'App',
@@ -24,7 +20,8 @@ export default {
   //methods: {}
   // watch: {},
    components: {
-    NavComp
+    NavComp,
+    FooterComp
    },
   // mixins: [],
   // filters: {},

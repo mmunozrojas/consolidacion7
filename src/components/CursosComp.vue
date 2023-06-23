@@ -76,7 +76,7 @@ export default {
 }
 
 .image-container img {
-  height: 100%;
+  height: 90%;
   width: 100%;
   object-fit: contain;
 }
