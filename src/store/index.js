@@ -15,7 +15,7 @@ export default new Vuex.Store({
         cupos: 20,
         inscritos: 10,
         completado: false,
-        fecha_registro: '06/03/2022',
+        fecha_registro: '06-03-2022',
         descripcion: 'Curso con las nuevas actualizaciones de JavaScript.'
       },
       {
@@ -27,7 +27,7 @@ export default new Vuex.Store({
         cupos: 35,
         inscritos: 23,
         completado: false,
-        fecha_registro: '05/03/2022',
+        fecha_registro: '05-03-2022',
         descripcion: 'Aprendiendo estilos con CSS desde el nivel más básico.'
       },
       {
@@ -39,7 +39,7 @@ export default new Vuex.Store({
         cupos: 25,
         inscritos: 0,
         completado: true,
-        fecha_registro: '05/03/2022',
+        fecha_registro: '05-03-2022',
         descripcion: 'Programando para la web con JavaScript.'
       },
       {
@@ -51,7 +51,7 @@ export default new Vuex.Store({
         cupos: 35,
         inscritos: 0,
         completado: true,
-        fecha_registro: '31/01/2022',
+        fecha_registro: '31-01-2022',
         descripcion: 'Aprende HTML 5 y crea tus primeras páginas web paso a paso con decenas de ejercicios.'
       },
       {
@@ -63,7 +63,7 @@ export default new Vuex.Store({
         cupos: 35,
         inscritos: 35,
         completado: false,
-        fecha_registro: '06/03/2022',
+        fecha_registro: '06-03-2022',
         descripcion: 'Aprende desde cero como usar VueJS, cómo usarlo en aplicaciones pequeñas y ver lo que ofrece el framework.'
       },
       {
@@ -75,7 +75,7 @@ export default new Vuex.Store({
         cupos: 40,
         inscritos: 35,
         completado: false,
-        fecha_registro: '06/03/2022',
+        fecha_registro: '06-03-2022',
         descripcion: 'Con SASS aprenderás a escribir mejor código de CSS con todas las funciones necesarias.'
       },
     ]
@@ -106,8 +106,36 @@ export default new Vuex.Store({
       return state.cursos.length;
     }
   },
-  mutations: {},
-  actions: {},
+  mutations: {
+    agregarCurso(state, curso) {
+      state.cursos.push(curso);
+    },
+    eliminarCurso(state, curso) {
+      const index = state.cursos.findIndex(c => c.id === curso.id);
+      if (index !== -1) {
+        state.cursos.splice(index, 1);
+      }
+    },
+    editarCurso(state, cursoEditado) {
+      const index = state.cursos.findIndex(c => c.id === cursoEditado.id);
+      if (index !== -1) {
+        state.cursos.splice(index, 1, cursoEditado);
+      }
+    }
+  },
+  actions: {
+    agregarCurso({ commit }, curso) {
+      // Aquí puedes realizar cualquier lógica adicional antes de agregar el curso
+      commit('agregarCurso', curso);
+    },
+    eliminarCurso({ commit }, curso) {
+      // Aquí puedes realizar cualquier lógica adicional antes de eliminar el curso
+      commit('eliminarCurso', curso);
+    },
+    editarCurso({ commit }, cursoEditado) {
+      // Aquí puedes realizar cualquier lógica adicional antes de editar el curso
+      commit('editarCurso', cursoEditado);
+    }
+  },
   modules: {}
 });
-

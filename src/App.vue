@@ -1,9 +1,15 @@
 <template>
-  <div id="app">
+  <v-app>
     <NavComp />
-    <router-view/>
-  </div>
+    <router-view></router-view>
+  </v-app>
 </template>
+
+<script>
+export default {
+  name: 'App',
+};
+</script>
 
 <script>
 import NavComp from './components/NavComp.vue'

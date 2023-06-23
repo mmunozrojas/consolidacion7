@@ -1,32 +1,48 @@
 <template>
-  <v-app-bar app color="primary" dark>
-    <v-toolbar-title>Cursos AlfaWeb</v-toolbar-title>
-    <v-spacer></v-spacer>
-    <v-btn to="/" color="secondary" dark router-link>
-      <v-icon>mdi-home</v-icon>
-    </v-btn>
-    <v-btn to="/admin" color="secondary" dark router-link>
-      <v-icon>mdi-cog</v-icon>
-    </v-btn>
-  </v-app-bar>
+  <v-app>
+    <v-navigation-drawer v-model="drawer" app>
+      <v-list>
+        <v-list-item to="/" router-link>
+          <v-list-item-icon>
+            <v-icon>mdi-home</v-icon>
+          </v-list-item-icon>
+          <v-list-item-title>Home</v-list-item-title>
+        </v-list-item>
+        <v-list-item to="/admin" router-link>
+          <v-list-item-icon>
+            <v-icon>mdi-cog</v-icon>
+          </v-list-item-icon>
+          <v-list-item-title>Admin</v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
+    
+    <v-app-bar app color="primary" dark elevation="-1">
+      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-toolbar-title>Cursos AlfaWeb</v-toolbar-title>
+    </v-app-bar>
+    
+    <v-main class="nav-comp__main">
+      <!-- Contenido principal de la página -->
+    </v-main>
+  </v-app>
 </template>
 
 <script>
 export default {
   name: 'nav-comp',
-  // props: {},
   data() {
-    return {};
+    return {
+      drawer: false
+    };
   },
-  // computed: {},
-  // methods: {},
-  // watch: {},
-  // components: {},
-  // mixins: [],
-  // filters: {},
 };
 </script>
 
 <style scoped>
-/* Estilos CSS para el componente NavBar */
+.nav-comp__main {
+  margin-top: 80px;
+  height: calc(100vh - 80px);
+}
 </style>
+
