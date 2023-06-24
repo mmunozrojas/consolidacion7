@@ -8,7 +8,7 @@ export default new Vuex.Store({
     cursos: [
       {
         id: 1,
-        img: 'https://i.blogs.es/545cf8/es6-logo/450_1000.png',
+        urlImagen: 'https://i.blogs.es/545cf8/es6-logo/450_1000.png',
         nombre: 'JavaScript Avanzado',
         costo: 30000,
         duracion: '2 meses',
@@ -20,7 +20,7 @@ export default new Vuex.Store({
       },
       {
         id: 2,
-        img: 'https://lineadecodigo.com/wp-content/uploads/2014/04/css.png',
+        urlImagen: 'https://lineadecodigo.com/wp-content/uploads/2014/04/css.png',
         nombre: 'CSS para principiantes',
         costo: 10000,
         duracion: '1 mes',
@@ -32,7 +32,7 @@ export default new Vuex.Store({
       },
       {
         id: 3,
-        img: 'https://1000marcas.net/wp-content/uploads/2020/11/JavaScript-logo.jpg',
+        urlImagen: 'https://1000marcas.net/wp-content/uploads/2020/11/JavaScript-logo.jpg',
         nombre: 'JavaScript Básico de 0 a 100',
         costo: 20000,
         duracion: '2 meses',
@@ -44,7 +44,7 @@ export default new Vuex.Store({
       },
       {
         id: 4,
-        img: 'https://www.w3.org/html/logo/downloads/HTML5_Logo_512.png',
+        urlImagen: 'https://www.w3.org/html/logo/downloads/HTML5_Logo_512.png',
         nombre: 'HTML Básico',
         costo: 10000,
         duracion: '1 mes',
@@ -56,7 +56,7 @@ export default new Vuex.Store({
       },
       {
         id: 5,
-        img: 'https://logosandtypes.com/wp-content/uploads/2020/08/vue.svg',
+        urlImagen: 'https://logosandtypes.com/wp-content/uploads/2020/08/vue.svg',
         nombre: 'Vue JS de 0 a 100',
         costo: 85500,
         duracion: '5 meses',
@@ -68,7 +68,7 @@ export default new Vuex.Store({
       },
       {
         id: 6,
-        img: 'https://miro.medium.com/max/512/1*9U1toerFxB8aiFRreLxEUQ.png',
+        urlImagen: 'https://miro.medium.com/max/512/1*9U1toerFxB8aiFRreLxEUQ.png',
         nombre: 'Estilos con SASS',
         costo: 45000,
         duracion: '1 mes',
@@ -119,7 +119,13 @@ export default new Vuex.Store({
     editarCurso(state, cursoEditado) {
       const index = state.cursos.findIndex(c => c.id === cursoEditado.id);
       if (index !== -1) {
-        state.cursos.splice(index, 1, cursoEditado);
+        // Realizar una copia superficial del curso que se va a editar
+        let updatedCurso = { ...cursoEditado };
+        // Convertir 'inscritos' y 'cupos' en números
+        updatedCurso.inscritos = Number(updatedCurso.inscritos);
+        updatedCurso.cupos = Number(updatedCurso.cupos);
+        // Usar Vue.set() para asegurarse de que Vuex pueda reaccionar a los cambios
+        Vue.set(state.cursos, index, updatedCurso);
       }
     }
   },

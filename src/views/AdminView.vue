@@ -9,7 +9,7 @@
         <template slot="item.costo" slot-scope="{ item }">
           <td>
             <v-chip :color="getColor(item.costo)">
-              {{ item.costo }}
+              {{ item.costo | formatCurrency }}
             </v-chip>
           </td>
         </template>
@@ -73,6 +73,9 @@
           <v-form @submit.prevent="editarCurso">
             <v-text-field v-model="cursoEditado.nombre" label="Nombre del curso"></v-text-field>
             <v-text-field v-model="cursoEditado.urlImagen" label="URL de la imagen del curso"></v-text-field>
+            <!-- Mostrar la imagen actual del curso -->
+            <img :src="cursoEditado.urlImagen" alt="Imagen del curso"
+              style="width: 200px; height: auto; margin-bottom: 10px;">
             <v-text-field v-model="cursoEditado.cupos" type="number" label="Cupos disponibles"></v-text-field>
             <v-text-field v-model="cursoEditado.inscritos" type="number" label="Inscritos"></v-text-field>
             <v-text-field v-model="cursoEditado.duracion" label="Duración"></v-text-field>
@@ -93,8 +96,8 @@
         <v-card-title class="headline">Eliminar Curso</v-card-title>
         <v-card-text>¿Estás seguro de que deseas eliminar este curso?</v-card-text>
         <v-card-actions>
-          <v-btn color="red darken-1" text @click="eliminarDialog = false">Cancelar</v-btn>
-          <v-btn color="green darken-1" text @click="eliminarCurso(cursoAEliminar)">Aceptar</v-btn>
+          <v-btn color="red darken-1" class="white--text" @click="eliminarDialog = false">Cancelar</v-btn>
+          <v-btn color="green darken-1" class="white--text" @click="eliminarCurso(cursoAEliminar)">Aceptar</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -106,6 +109,11 @@ import { mapState, mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'AdminView',
+  filters: {
+    formatCurrency(value) {
+      return new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP' }).format(value);
+    },
+  },
   computed: {
     ...mapState(['cursos']),
     ...mapGetters([
@@ -165,13 +173,22 @@ export default {
     openEditarCursoDialog(curso) {
       this.editarCursoDialog = true;
       this.cursoEditado = { ...curso };
-      this.cursoEditado.urlImagen = curso.img;
+      this.cursoEditado.urlImagen = curso.urlImagen; // Asignar la URL de la imagen actual del curso
     },
     agregarCurso() {
       if (parseInt(this.nuevoCurso.inscritos) <= parseInt(this.nuevoCurso.cupos)) {
         this.nuevoCurso.completado = false;
         this.nuevoCurso.fecha_registro = new Date().toLocaleDateString();
-        this.$store.dispatch('agregarCurso', this.nuevoCurso);
+        // Convertir a número los campos que deben ser numéricos
+        this.nuevoCurso.cupos = parseInt(this.nuevoCurso.cupos);
+        this.nuevoCurso.inscritos = parseInt(this.nuevoCurso.inscritos);
+        this.nuevoCurso.costo = Number(this.nuevoCurso.costo);
+
+
+        // Despachar la acción para agregar el nuevo curso al store de Vuex
+        this.$store.dispatch('agregarCurso', { ...this.nuevoCurso });
+
+        // Restaurar los valores iniciales del nuevo curso
         this.nuevoCurso = {
           nombre: '',
           urlImagen: '',
@@ -181,6 +198,8 @@ export default {
           costo: '',
           descripcion: '',
         };
+
+        // Cerrar el diálogo de agregar curso
         this.agregarCursoDialog = false;
       } else {
         alert('La cantidad de inscritos no puede ser mayor a la cantidad de cupos disponibles');
@@ -195,8 +214,21 @@ export default {
       this.eliminarDialog = false;
     },
     editarCurso() {
-      this.$store.dispatch('editarCurso', this.cursoEditado);
-      this.editarCursoDialog = false;
+      // Encontrar el índice del curso original en la lista de cursos
+      const index = this.cursos.findIndex(c => c.id === this.cursoEditado.id);
+      if (index !== -1) {
+        // Convertir a número los campos que deben ser numéricos
+        this.cursoEditado.cupos = parseInt(this.cursoEditado.cupos);
+        this.cursoEditado.inscritos = parseInt(this.cursoEditado.inscritos);
+        this.cursoEditado.costo = Number(this.cursoEditado.costo);
+
+        // Actualizar la URL de la imagen en el curso original
+        this.cursos[index].urlImagen = this.cursoEditado.urlImagen;
+
+        // Despachar la acción para guardar los cambios en el store de Vuex
+        this.$store.dispatch('editarCurso', this.cursoEditado);
+        this.editarCursoDialog = false;
+      }
     },
     getColor(value) {
       return value > 0 ? 'green' : 'red';

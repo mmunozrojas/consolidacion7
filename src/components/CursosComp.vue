@@ -2,7 +2,7 @@
   <v-container class="container" fluid>
     <v-card class="course-card ma-1 hover elevation-2">
       <div class="image-container">
-        <v-img :src="curso.img" height="200px" contain></v-img>
+        <v-img :src="curso.urlImagen" height="200px" contain></v-img>
       </div>
       <v-card-title>
         <v-spacer />
@@ -16,19 +16,19 @@
       <v-card-text class="text-center">
         <div class="subtitle-2 my-1 course-data text-center">
           <v-icon class="icon-cost" color="blue">mdi-currency-usd</v-icon>
-          Costo: {{ curso.costo }}
+          <strong class="highlight-text">Costo:</strong> {{ formattedCosto }}
         </div>
         <div class="subtitle-2 my-1 course-data text-center">
           <v-icon class="icon-duration" color="green">mdi-clock-outline</v-icon>
-          Duración: {{ curso.duracion }}
+          <strong class="highlight-text">Duración:</strong> {{ curso.duracion }}
         </div>
         <div class="subtitle-2 my-1 course-data text-center">
           <v-icon class="icon-capacity" color="orange">mdi-account-group-outline</v-icon>
-          Cupos: {{ curso.cupos }}
+          <strong class="highlight-text">Cupos:</strong> {{ curso.cupos }}
         </div>
         <div class="subtitle-2 my-1 course-data text-center">
           <v-icon class="icon-enrollment" color="purple">mdi-account-check-outline</v-icon>
-          Inscritos: {{ curso.inscritos }}
+          <strong class="highlight-text">Inscritos:</strong> {{ curso.inscritos }}
         </div>
       </v-card-text>
     </v-card>
@@ -42,9 +42,15 @@ export default {
     curso: {
       type: Object,
       required: true,
-    }
-  }
-}
+    },
+  },
+  computed: {
+    formattedCosto() {
+      const formatter = new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP' });
+      return formatter.format(this.curso.costo);
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -88,19 +94,25 @@ export default {
   font-size: large;
   white-space: normal;
 }
+
 .icon-cost {
   margin-right: 4px;
 }
 
 .icon-duration {
-  margin-right: 4px; 
+  margin-right: 4px;
 }
 
 .icon-capacity {
-  margin-right: 4px; 
+  margin-right: 4px;
 }
 
 .icon-enrollment {
-  margin-right: 4px; 
+  margin-right: 4px;
+}
+
+.highlight-text {
+  font-weight: bolder;
+  text-shadow: 1px 1px 2px rgba(78, 77, 75, 0.5);
 }
 </style>

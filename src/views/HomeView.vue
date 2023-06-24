@@ -1,42 +1,18 @@
 <template>
   <div class="home-container">
     <v-container>
-      <v-carousel
-        cycle
-        height="300"
-        hide-delimiter-background
-        show-arrows-on-hover
-        class="mb-5 mt-n7 hide-under-1160px"
-      >
+      <v-carousel cycle height="300" hide-delimiter-background show-arrows-on-hover class="mb-5 mt-n7 hide-under-1160px">
         <template v-slot:prev="{ on, attrs }">
-          <v-btn
-            color="success"
-            v-bind="attrs"
-            v-on="on"
-          >Anterior</v-btn>
+          <v-btn color="success" v-bind="attrs" v-on="on">Anterior</v-btn>
         </template>
         <template v-slot:next="{ on, attrs }">
-          <v-btn
-            color="info"
-            v-bind="attrs"
-            v-on="on"
-          >Siguiente</v-btn>
+          <v-btn color="info" v-bind="attrs" v-on="on">Siguiente</v-btn>
         </template>
-        <v-carousel-item
-          v-for="(slide, i) in slides"
-          :key="i"
-        >
-          <v-sheet
-            :color="colors[i]"
-            height="100%"
-          >
-            <v-row
-              class="fill-height"
-              align="center"
-              justify="center"
-            >
+        <v-carousel-item v-for="(slide, i) in slides" :key="i">
+          <v-sheet :color="colors[i]" height="100%">
+            <v-row class="fill-height" align="center" justify="center">
               <div v-if="i === 0">
-                <img :src="imageURL" alt="Slide Image" width="100%" height="100%"/>
+                <img :src="imageURL" alt="Slide Image" width="100%" height="100%" />
               </div>
               <div v-else class="text-h3">
                 {{ slide }}
@@ -60,7 +36,7 @@ import CursosComp from '@/components/CursosComp.vue'
 
 export default {
   name: 'HomeView',
-  data () {
+  data() {
     return {
       colors: [
         'transparent',

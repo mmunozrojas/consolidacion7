@@ -13,16 +13,16 @@ import FooterComp from './components/FooterComp.vue'
 export default {
   name: 'App',
   // props: {},
-  data: function(){
+  data: function () {
     return {}
   },
   // computed: {},
   //methods: {}
   // watch: {},
-   components: {
+  components: {
     NavComp,
-    FooterComp
-   },
+    FooterComp,
+  },
   // mixins: [],
   // filters: {},
   // -- Lifecycle Methods
@@ -30,6 +30,4 @@ export default {
 }
 </script>
 
-<style scoped>
-  
-</style>
+<style scoped></style>
