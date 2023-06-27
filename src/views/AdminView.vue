@@ -38,8 +38,15 @@
     <div class="admin-view__info">
       <div v-for="(item, index) in infoItems" :key="index"
         :class="['admin-view__info-item', `admin-view__info-item--${index}`]">
-        <p :class="['admin-view__info-label', `admin-view__info-label--${index}`]">{{ item.label }}</p>
-        <p :class="['admin-view__info-value', `admin-view__info-value--${index}`]">{{ item.value }}</p>
+        <v-alert
+      border="left"
+      colored-border
+      color="deep-purple accent-4"
+      elevation="2"
+    >
+      <p :class="['admin-view__info-label', `admin-view__info-label--${index}`]">{{ item.label }}</p>
+      <p :class="['admin-view__info-value', `admin-view__info-value--${index}`]">{{ item.value }}</p>
+    </v-alert>
       </div>
     </div>
 
@@ -264,7 +271,7 @@ export default {
 .admin-view__info-item {
   border-radius: 5px;
   padding: 10px;
-  margin-bottom: 10px;
+  /* margin-bottom: 10px; */
 }
 
 .admin-view__info-label {
@@ -281,54 +288,54 @@ export default {
 }
 
 /* Colores para los bordes de los info-items */
-.admin-view__info-item--0 {
+/* .admin-view__info-item--0 {
   border: 1px solid #e53935;
-}
+} */
 
 .admin-view__info-item--0 .admin-view__info-value--0,
 .admin-view__info-item--0 .admin-view__info-label--0 {
   color: #e53935;
 }
 
-.admin-view__info-item--1 {
+/* .admin-view__info-item--1 {
   border: 1px solid #ceb442;
-}
+} */
 
 .admin-view__info-item--1 .admin-view__info-value--1,
 .admin-view__info-item--1 .admin-view__info-label--1 {
   color: #ceb442;
 }
 
-.admin-view__info-item--2 {
+/* .admin-view__info-item--2 {
   border: 1px solid #43a047;
-}
+} */
 
 .admin-view__info-item--2 .admin-view__info-value--2,
 .admin-view__info-item--2 .admin-view__info-label--2 {
   color: #43a047;
 }
 
-.admin-view__info-item--3 {
+/* .admin-view__info-item--3 {
   border: 1px solid #1e88e5;
-}
+} */
 
 .admin-view__info-item--3 .admin-view__info-value--3,
 .admin-view__info-item--3 .admin-view__info-label--3 {
   color: #1e88e5;
 }
 
-.admin-view__info-item--4 {
+/* .admin-view__info-item--4 {
   border: 1px solid #8e24aa;
-}
+} */
 
 .admin-view__info-item--4 .admin-view__info-value--4,
 .admin-view__info-item--4 .admin-view__info-label--4 {
   color: #8e24aa;
 }
 
-.admin-view__info-item--5 {
+/* .admin-view__info-item--5 {
   border: 1px solid #6d4c41;
-}
+} */
 
 .admin-view__info-item--5 .admin-view__info-value--5,
 .admin-view__info-item--5 .admin-view__info-label--5 {
