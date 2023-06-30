@@ -21,10 +21,10 @@
           </td>
         </template>
         <template slot="item.completado" slot-scope="{ item }">
-      <td>
-        <v-switch v-model="item.completado"></v-switch>
-      </td>
-    </template>
+          <td>
+            <v-switch v-model="item.completado"></v-switch>
+          </td>
+        </template>
         <template slot="item.acciones" slot-scope="{ item }">
           <td class="d-flex align-center">
             <v-icon @click="confirmarEliminacion(item)">mdi-delete</v-icon>
@@ -50,8 +50,7 @@
         <v-card-text>
           <v-form @submit.prevent="agregarCurso">
             <v-text-field v-model="nuevoCurso.nombre" label="Nombre del curso" required></v-text-field>
-            <v-text-field v-model="nuevoCurso.urlImagen" label="URL de la imagen del curso"
-              :rules="[urlValidationRule]"></v-text-field>
+            <v-text-field v-model="nuevoCurso.urlImagen" label="URL de la imagen del curso" :rules="urlValidationRule"></v-text-field>
             <v-text-field v-model="nuevoCurso.cupos" type="number" label="Cupos disponibles" required></v-text-field>
             <v-text-field v-model="nuevoCurso.inscritos" type="number" label="Inscritos" required></v-text-field>
             <v-text-field v-model="nuevoCurso.duracion" label="Duración" required></v-text-field>
@@ -73,8 +72,7 @@
         <v-card-text>
           <v-form @submit.prevent="editarCurso">
             <v-text-field v-model="cursoEditado.nombre" label="Nombre del curso" required></v-text-field>
-            <v-text-field v-model="cursoEditado.urlImagen" label="URL de la imagen del curso"
-              required></v-text-field>
+            <v-text-field v-model="cursoEditado.urlImagen" label="URL de la imagen del curso" required></v-text-field>
             <img :src="cursoEditado.urlImagen" alt="Imagen del curso"
               style="width: 200px; height: auto; margin-bottom: 10px;">
             <v-text-field v-model="cursoEditado.cupos" type="number" label="Cupos disponibles" required></v-text-field>
@@ -167,10 +165,11 @@ export default {
         (value) => !!value || 'El campo URL es requerido',
         (value) => {
           const pattern = /^(ftp|http|https):\/\/[^ "]+$/;
-          return pattern.test(value) || 'URL inválida';
+          return (pattern.test(value) || 'URL inválida');
         },
       ];
     },
+
     uniqueValidaciones() {
       return [...new Set(this.validaciones)];
     },
