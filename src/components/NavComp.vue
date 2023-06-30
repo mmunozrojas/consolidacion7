@@ -1,20 +1,21 @@
 <template>
-<!-- Si usamos un drawer debemos envolver todo en un div -->
-<div>
-  <!--el v-app-bar siempre debe envolver todo el nav y llevar el atributo app-->
-  <!-- y el v-app solo se ocupa en el archivo app.vue y una sola vez -->
-  <v-app-bar app color="error" dark elevation="5">
-    <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-    <v-spacer></v-spacer>
-    <v-btn color="grey" class="white--text mr-9"> <!-- Color del texto y fondo modificados aquí -->
-      <v-toolbar-title>Cursos AlfaWeb</v-toolbar-title>
-    </v-btn>
-    <v-spacer></v-spacer>
-  </v-app-bar>
-<!-- El navigation drawer debe ir afuera del v-app-bar-->
+  <div>
+    <v-app-bar app color="error" dark elevation="5">
+      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-container fluid>
+        <v-row align="center" justify="center">
+          <v-col cols="auto">
+            <v-btn color="grey" class="white--text custom-button">
+              <v-toolbar-title class="custom-title">Cursos AlfaWeb</v-toolbar-title>
+            </v-btn>
+          </v-col>
+        </v-row>
+      </v-container>
+      <v-spacer></v-spacer>
+      <v-switch v-model="darkMode" label="Modo oscuro" class="mr-3"></v-switch>
+    </v-app-bar>
+
     <v-navigation-drawer v-model="drawer" app temporary>
-      <!-- Le agregué el atributo temporary que sirve para que el drawer se cierre 
-      al hacer click en los items de la lista. -->
       <v-list>
         <v-list-item to="/" router-link>
           <v-list-item-icon>
@@ -30,7 +31,7 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-</div>
+  </div>
 </template>
 
 <script>
@@ -39,16 +40,23 @@ export default {
   data() {
     return {
       drawer: false,
+      darkMode: false,
     };
   },
-  
+  watch: {
+    darkMode(value) {
+      this.$vuetify.theme.dark = value;
+    },
+  },
 };
 </script>
 
 <style scoped>
-.nav-comp__main {
-  margin-top: 80px;
-  height: calc(100vh - 80px);
+.custom-title {
+  text-align: center !important;
+}
+
+.custom-button {
+  margin-left: 100px;
 }
 </style>
-

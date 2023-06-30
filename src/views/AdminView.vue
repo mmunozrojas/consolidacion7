@@ -21,12 +21,10 @@
           </td>
         </template>
         <template slot="item.completado" slot-scope="{ item }">
-          <td>
-            <v-chip :color="getTerminadoColor(item.completado)">
-              {{ getTerminadoText(item.completado) }}
-            </v-chip>
-          </td>
-        </template>
+      <td>
+        <v-switch v-model="item.completado"></v-switch>
+      </td>
+    </template>
         <template slot="item.acciones" slot-scope="{ item }">
           <td class="d-flex align-center">
             <v-icon @click="confirmarEliminacion(item)">mdi-delete</v-icon>
@@ -38,15 +36,10 @@
     <div class="admin-view__info">
       <div v-for="(item, index) in infoItems" :key="index"
         :class="['admin-view__info-item', `admin-view__info-item--${index}`]">
-        <v-alert
-      border="left"
-      colored-border
-      color="deep-purple accent-4"
-      elevation="2"
-    >
-      <p :class="['admin-view__info-label', `admin-view__info-label--${index}`]">{{ item.label }}</p>
-      <p :class="['admin-view__info-value', `admin-view__info-value--${index}`]">{{ item.value }}</p>
-    </v-alert>
+        <v-alert border="left" colored-border color="deep-purple accent-4" elevation="2">
+          <p :class="['admin-view__info-label', `admin-view__info-label--${index}`]">{{ item.label }}</p>
+          <p :class="['admin-view__info-value', `admin-view__info-value--${index}`]">{{ item.value }}</p>
+        </v-alert>
       </div>
     </div>
 
@@ -56,13 +49,14 @@
         <v-card-title>Agregar Curso</v-card-title>
         <v-card-text>
           <v-form @submit.prevent="agregarCurso">
-            <v-text-field v-model="nuevoCurso.nombre" label="Nombre del curso"></v-text-field>
-            <v-text-field v-model="nuevoCurso.urlImagen" label="URL de la imagen del curso"></v-text-field>
-            <v-text-field v-model="nuevoCurso.cupos" type="number" label="Cupos disponibles"></v-text-field>
-            <v-text-field v-model="nuevoCurso.inscritos" type="number" label="Inscritos"></v-text-field>
-            <v-text-field v-model="nuevoCurso.duracion" label="Duración"></v-text-field>
-            <v-text-field v-model="nuevoCurso.costo" label="Costo"></v-text-field>
-            <v-text-field v-model="nuevoCurso.descripcion" label="Descripción"></v-text-field>
+            <v-text-field v-model="nuevoCurso.nombre" label="Nombre del curso" required></v-text-field>
+            <v-text-field v-model="nuevoCurso.urlImagen" label="URL de la imagen del curso"
+              :rules="[urlValidationRule]"></v-text-field>
+            <v-text-field v-model="nuevoCurso.cupos" type="number" label="Cupos disponibles" required></v-text-field>
+            <v-text-field v-model="nuevoCurso.inscritos" type="number" label="Inscritos" required></v-text-field>
+            <v-text-field v-model="nuevoCurso.duracion" label="Duración" required></v-text-field>
+            <v-text-field v-model="nuevoCurso.costo" type="number" label="Costo"></v-text-field>
+            <v-text-field v-model="nuevoCurso.descripcion" label="Descripción" required></v-text-field>
           </v-form>
         </v-card-text>
         <v-card-actions>
@@ -78,21 +72,21 @@
         <v-card-title>Editar Curso</v-card-title>
         <v-card-text>
           <v-form @submit.prevent="editarCurso">
-            <v-text-field v-model="cursoEditado.nombre" label="Nombre del curso"></v-text-field>
-            <v-text-field v-model="cursoEditado.urlImagen" label="URL de la imagen del curso"></v-text-field>
-            <!-- Mostrar la imagen actual del curso -->
+            <v-text-field v-model="cursoEditado.nombre" label="Nombre del curso" required></v-text-field>
+            <v-text-field v-model="cursoEditado.urlImagen" label="URL de la imagen del curso"
+              required></v-text-field>
             <img :src="cursoEditado.urlImagen" alt="Imagen del curso"
               style="width: 200px; height: auto; margin-bottom: 10px;">
-            <v-text-field v-model="cursoEditado.cupos" type="number" label="Cupos disponibles"></v-text-field>
-            <v-text-field v-model="cursoEditado.inscritos" type="number" label="Inscritos"></v-text-field>
-            <v-text-field v-model="cursoEditado.duracion" label="Duración"></v-text-field>
-            <v-text-field v-model="cursoEditado.costo" label="Costo"></v-text-field>
-            <v-text-field v-model="cursoEditado.descripcion" label="Descripción"></v-text-field>
+            <v-text-field v-model="cursoEditado.cupos" type="number" label="Cupos disponibles" required></v-text-field>
+            <v-text-field v-model="cursoEditado.inscritos" type="number" label="Inscritos" required></v-text-field>
+            <v-text-field v-model="cursoEditado.duracion" label="Duración" required></v-text-field>
+            <v-text-field v-model="cursoEditado.costo" type="number" label="Costo" required></v-text-field>
+            <v-text-field v-model="cursoEditado.descripcion" label="Descripción" required></v-text-field>
           </v-form>
         </v-card-text>
         <v-card-actions>
           <v-btn @click="editarCursoDialog = false">Cancelar</v-btn>
-          <v-btn color="primary" @click="editarCurso">Guardar Cambios</v-btn>
+          <v-btn color="primary" @click="guardarCursoEditado">Guardar Cambios</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -105,6 +99,21 @@
         <v-card-actions>
           <v-btn color="red darken-1" class="white--text" @click="eliminarDialog = false">Cancelar</v-btn>
           <v-btn color="green darken-1" class="white--text" @click="eliminarCurso(cursoAEliminar)">Aceptar</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <!-- Diálogo para mostrar validaciones -->
+    <v-dialog v-model="validacionesDialog" max-width="400">
+      <v-card>
+        <v-card-title class="headline">Validaciones</v-card-title>
+        <v-card-text>
+          <ul>
+            <li v-for="validacion in uniqueValidaciones" :key="validacion">{{ validacion }}</li>
+          </ul>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn color="primary" @click="validacionesDialog = false">Aceptar</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -153,12 +162,26 @@ export default {
         { text: 'Acciones', value: 'acciones', sortable: false },
       ];
     },
+    urlValidationRule() {
+      return [
+        (value) => !!value || 'El campo URL es requerido',
+        (value) => {
+          const pattern = /^(ftp|http|https):\/\/[^ "]+$/;
+          return pattern.test(value) || 'URL inválida';
+        },
+      ];
+    },
+    uniqueValidaciones() {
+      return [...new Set(this.validaciones)];
+    },
   },
   data() {
     return {
       agregarCursoDialog: false,
       editarCursoDialog: false,
       eliminarDialog: false,
+      validacionesDialog: false,
+      validaciones: [],
       nuevoCurso: {
         nombre: '',
         urlImagen: '',
@@ -180,36 +203,42 @@ export default {
     openEditarCursoDialog(curso) {
       this.editarCursoDialog = true;
       this.cursoEditado = { ...curso };
-      this.cursoEditado.urlImagen = curso.urlImagen; // Asignar la URL de la imagen actual del curso
+      this.cursoEditado.urlImagen = curso.urlImagen;
     },
     agregarCurso() {
-      if (parseInt(this.nuevoCurso.inscritos) <= parseInt(this.nuevoCurso.cupos)) {
-        this.nuevoCurso.completado = false;
-        this.nuevoCurso.fecha_registro = new Date().toLocaleDateString();
-        // Convertir a número los campos que deben ser numéricos
-        this.nuevoCurso.cupos = parseInt(this.nuevoCurso.cupos);
-        this.nuevoCurso.inscritos = parseInt(this.nuevoCurso.inscritos);
-        this.nuevoCurso.costo = Number(this.nuevoCurso.costo);
-
-
-        // Despachar la acción para agregar el nuevo curso al store de Vuex
-        this.$store.dispatch('agregarCurso', { ...this.nuevoCurso });
-
-        // Restaurar los valores iniciales del nuevo curso
-        this.nuevoCurso = {
-          nombre: '',
-          urlImagen: '',
-          cupos: 0,
-          inscritos: 0,
-          duracion: '',
-          costo: '',
-          descripcion: '',
-        };
-
-        // Cerrar el diálogo de agregar curso
-        this.agregarCursoDialog = false;
+      if (
+        this.nuevoCurso.nombre &&
+        this.nuevoCurso.urlImagen &&
+        this.nuevoCurso.cupos &&
+        this.nuevoCurso.inscritos &&
+        this.nuevoCurso.duracion &&
+        this.nuevoCurso.costo &&
+        /^\d+(\.\d+)?$/.test(this.nuevoCurso.costo) &&
+        this.nuevoCurso.descripcion
+      ) {
+        if (parseInt(this.nuevoCurso.inscritos) <= parseInt(this.nuevoCurso.cupos)) {
+          this.nuevoCurso.completado = false;
+          this.nuevoCurso.fecha_registro = new Date().toLocaleDateString();
+          this.nuevoCurso.cupos = parseInt(this.nuevoCurso.cupos);
+          this.nuevoCurso.inscritos = parseInt(this.nuevoCurso.inscritos);
+          this.nuevoCurso.costo = Number(this.nuevoCurso.costo);
+          this.$store.dispatch('agregarCurso', { ...this.nuevoCurso });
+          this.nuevoCurso = {
+            nombre: '',
+            urlImagen: '',
+            cupos: 0,
+            inscritos: 0,
+            duracion: '',
+            costo: '',
+            descripcion: '',
+          };
+          this.agregarCursoDialog = false;
+          this.clearValidations();
+        } else {
+          this.showValidation('La cantidad de inscritos no puede ser mayor a la cantidad de cupos disponibles');
+        }
       } else {
-        alert('La cantidad de inscritos no puede ser mayor a la cantidad de cupos disponibles');
+        this.showValidation('Por favor, complete todos los campos correctamente antes de agregar un curso');
       }
     },
     confirmarEliminacion(curso) {
@@ -221,20 +250,44 @@ export default {
       this.eliminarDialog = false;
     },
     editarCurso() {
-      // Encontrar el índice del curso original en la lista de cursos
-      const index = this.cursos.findIndex(c => c.id === this.cursoEditado.id);
+      const index = this.cursos.findIndex((c) => c.id === this.cursoEditado.id);
       if (index !== -1) {
-        // Convertir a número los campos que deben ser numéricos
         this.cursoEditado.cupos = parseInt(this.cursoEditado.cupos);
         this.cursoEditado.inscritos = parseInt(this.cursoEditado.inscritos);
         this.cursoEditado.costo = Number(this.cursoEditado.costo);
-
-        // Actualizar la URL de la imagen en el curso original
         this.cursos[index].urlImagen = this.cursoEditado.urlImagen;
-
-        // Despachar la acción para guardar los cambios en el store de Vuex
         this.$store.dispatch('editarCurso', this.cursoEditado);
         this.editarCursoDialog = false;
+        this.clearValidations();
+      }
+    },
+    guardarCursoEditado() {
+      if (
+        this.cursoEditado.nombre &&
+        this.cursoEditado.urlImagen &&
+        this.cursoEditado.cupos &&
+        this.cursoEditado.inscritos &&
+        this.cursoEditado.duracion &&
+        this.cursoEditado.costo &&
+        /^\d+(\.\d+)?$/.test(this.cursoEditado.costo) &&
+        this.cursoEditado.descripcion
+      ) {
+        if (parseInt(this.cursoEditado.inscritos) <= parseInt(this.cursoEditado.cupos)) {
+          const index = this.cursos.findIndex((c) => c.id === this.cursoEditado.id);
+          if (index !== -1) {
+            this.cursoEditado.cupos = parseInt(this.cursoEditado.cupos);
+            this.cursoEditado.inscritos = parseInt(this.cursoEditado.inscritos);
+            this.cursoEditado.costo = Number(this.cursoEditado.costo);
+            this.cursos[index].urlImagen = this.cursoEditado.urlImagen;
+            this.$store.dispatch('editarCurso', this.cursoEditado);
+            this.editarCursoDialog = false;
+            this.clearValidations();
+          }
+        } else {
+          this.showValidation('La cantidad de inscritos no puede ser mayor a la cantidad de cupos disponibles (si el valor es correcto ignore este mensaje)');
+        }
+      } else {
+        this.showValidation('Por favor, complete todos los campos correctamente antes de guardar los cambios del curso');
       }
     },
     getColor(value) {
@@ -245,6 +298,16 @@ export default {
     },
     getTerminadoColor(value) {
       return value === true ? 'blue darken-1' : 'grey darken-2';
+    },
+    showValidation(message) {
+      if (!this.validaciones.includes(message)) {
+        this.validaciones.push(message);
+      }
+      this.validacionesDialog = true;
+    },
+    clearValidations() {
+      this.validaciones = [];
+      this.validacionesDialog = false;
     },
   },
 };

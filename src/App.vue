@@ -9,6 +9,7 @@
 <script>
 import NavComp from './components/NavComp.vue'
 import FooterComp from './components/FooterComp.vue'
+import cursos from '/cursos.json';
 
 export default {
   name: 'App',
@@ -26,6 +27,9 @@ export default {
   // mixins: [],
   // filters: {},
   // -- Lifecycle Methods
+  created() {
+    this.$store.commit('cargarCursos', cursos);
+  },
   // -- End Lifecycle Methods
 }
 </script>

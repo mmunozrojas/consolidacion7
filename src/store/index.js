@@ -5,80 +5,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    cursos: [
-      {
-        id: 1,
-        urlImagen: 'https://i.blogs.es/545cf8/es6-logo/450_1000.png',
-        nombre: 'JavaScript Avanzado',
-        costo: 30000,
-        duracion: '2 meses',
-        cupos: 20,
-        inscritos: 10,
-        completado: false,
-        fecha_registro: '06-03-2022',
-        descripcion: 'Curso con las nuevas actualizaciones de JavaScript.'
-      },
-      {
-        id: 2,
-        urlImagen: 'https://lineadecodigo.com/wp-content/uploads/2014/04/css.png',
-        nombre: 'CSS para principiantes',
-        costo: 10000,
-        duracion: '1 mes',
-        cupos: 35,
-        inscritos: 23,
-        completado: false,
-        fecha_registro: '05-03-2022',
-        descripcion: 'Aprendiendo estilos con CSS desde el nivel más básico.'
-      },
-      {
-        id: 3,
-        urlImagen: 'https://1000marcas.net/wp-content/uploads/2020/11/JavaScript-logo.jpg',
-        nombre: 'JavaScript Básico de 0 a 100',
-        costo: 20000,
-        duracion: '2 meses',
-        cupos: 25,
-        inscritos: 0,
-        completado: true,
-        fecha_registro: '05-03-2022',
-        descripcion: 'Programando para la web con JavaScript.'
-      },
-      {
-        id: 4,
-        urlImagen: 'https://www.w3.org/html/logo/downloads/HTML5_Logo_512.png',
-        nombre: 'HTML Básico',
-        costo: 10000,
-        duracion: '1 mes',
-        cupos: 35,
-        inscritos: 0,
-        completado: true,
-        fecha_registro: '31-01-2022',
-        descripcion: 'Aprende HTML 5 y crea tus primeras páginas web paso a paso con decenas de ejercicios.'
-      },
-      {
-        id: 5,
-        urlImagen: 'https://logosandtypes.com/wp-content/uploads/2020/08/vue.svg',
-        nombre: 'Vue JS de 0 a 100',
-        costo: 85500,
-        duracion: '5 meses',
-        cupos: 35,
-        inscritos: 35,
-        completado: false,
-        fecha_registro: '06-03-2022',
-        descripcion: 'Aprende desde cero como usar VueJS, cómo usarlo en aplicaciones pequeñas y ver lo que ofrece el framework.'
-      },
-      {
-        id: 6,
-        urlImagen: 'https://miro.medium.com/max/512/1*9U1toerFxB8aiFRreLxEUQ.png',
-        nombre: 'Estilos con SASS',
-        costo: 45000,
-        duracion: '1 mes',
-        cupos: 40,
-        inscritos: 35,
-        completado: false,
-        fecha_registro: '06-03-2022',
-        descripcion: 'Con SASS aprenderás a escribir mejor código de CSS con todas las funciones necesarias.'
-      },
-    ]
+    cursos: []
   },
   getters: {
     totalAlumnosPermitidos: (state) => {
@@ -127,7 +54,10 @@ export default new Vuex.Store({
         // Usar Vue.set() para asegurarse de que Vuex pueda reaccionar a los cambios
         Vue.set(state.cursos, index, updatedCurso);
       }
-    }
+    },
+    cargarCursos(state, cursos) {
+      state.cursos = cursos;
+    }, 
   },
   actions: {
     agregarCurso({ commit }, curso) {
@@ -141,7 +71,16 @@ export default new Vuex.Store({
     editarCurso({ commit }, cursoEditado) {
       // Aquí puedes realizar cualquier lógica adicional antes de editar el curso
       commit('editarCurso', cursoEditado);
-    }
+    },
+    async cargarCursos({ commit }) {
+      try {
+        const response = await fetch('/cursos.json'); 
+        const data = await response.json();
+        commit('cargarCursos', data);
+      } catch (error) {
+        console.log('Error al cargar los cursos:', error);
+      }
+    },
   },
   modules: {}
 });
