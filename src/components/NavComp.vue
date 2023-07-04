@@ -12,7 +12,8 @@
         </v-row>
       </v-container>
       <v-spacer></v-spacer>
-      <v-switch v-model="darkMode" label="Modo oscuro" class="mr-3"></v-switch>
+      <v-switch v-if="!isMobile" v-model="darkMode" label="Modo oscuro" class="mr-3 custom-switch"></v-switch>
+      <v-switch v-else v-model="darkMode" class="mr-3 custom-switch"></v-switch>
     </v-app-bar>
 
     <v-navigation-drawer v-model="drawer" app temporary>
@@ -41,7 +42,20 @@ export default {
     return {
       drawer: false,
       darkMode: false,
+      isMobile: false,
     };
+  },
+  created() {
+    window.addEventListener('resize', this.handleResize);
+    this.handleResize();
+  },
+  destroyed() {
+    window.removeEventListener('resize', this.handleResize);
+  },
+  methods: {
+    handleResize() {
+      this.isMobile = window.innerWidth < 800;
+    },
   },
   watch: {
     darkMode(value) {
@@ -58,5 +72,10 @@ export default {
 
 .custom-button {
   margin-left: 100px;
+}
+
+.custom-switch {
+  margin-top: 20px !important;
+  margin-left: 30px;
 }
 </style>
